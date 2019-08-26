@@ -2,4 +2,4 @@
 dub.selections.json
 .vscode/sftp.json
 *.exe
-
+_data

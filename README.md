@@ -14,7 +14,5 @@ Probably not useful at all, but it shows one important thing: How to prevent a G
 
 ## Build
 
-Use
-
     dub build --build=debug|release --config=winmain --compiler=dmd --arch=x86_64
 To build the version using WinMain. Omit the **--config=winmain** to build an executable using a standard *main()* function. This will open a text console. It's particularly useful for debugging purposes, because some Gtk+ related debug output will go to the console. 

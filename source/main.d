@@ -6,52 +6,22 @@ module main;
  + 
  + © 2019, Alex Vie <silvercircle@gmail.com>
  + License: MIT
+ +
+ + Build the WinMain() version:
+ + dub build --build=release --config=winmain --compiler=ldc2|dmd --arch=x86_64
+ +
+ + Build the standard version (non-windows systems or if you need the console on Win)
+ + dub build --build=release --compiler=ldc2|dmd --arch=x86_64
  +/
 
 import std.file;
 import std.conv;
-import std.stdio;
 import std.string;
 
 import gio.Application : GioApplication = Application;
 import gtk.Application;
-import gtk.ApplicationWindow;
-import gtk.Label;
 
-import gtk.MainWindow;
-import gtk.Box;
-import gtk.MenuBar;
-import gtk.MenuItem, gdk.Event, gtk.Widget;
-
-class HelloWorld : ApplicationWindow
-{
-	this(Application application, ref string[] args)
-	{
-		super(application);
-		this.m_args = args;
-		setTitle("GtkD");
-		setBorderWidth(10);
-		add(new Label("Hello World"));
-		this.setDefaultSize(600, 400);
-
-		MenuBar menuBar = new MenuBar();
-		MenuItem fileMenuItem = new MenuItem("File");
-	
-		MenuItem exitMenuItem = new MenuItem("Exit");
-		//exitMenuItem.addOnActivate(&exit);
-		//fileMenuItem.append(exitMenuItem);
-			
-		menuBar.append(fileMenuItem);
-	
-		Box box = new Box(Orientation.VERTICAL, 10);
-		box.packStart(menuBar, false, false, 0);
-
-		showAll();
-	}
-
-private:
-	string[] m_args;
-}
+import appwindow, context;
 
 version(WINMAIN) {
 	import core.sys.windows.windows, std.array: split;
@@ -73,9 +43,9 @@ version(WINMAIN) {
 			Runtime.initialize();
 			args ~= std.file.thisExePath().dup;
 			args ~= cmdargs;
-			MessageBoxA(null, "In WinMain(), now starting the real app", lpCmdLine, MB_ICONEXCLAMATION);
+			const GlobalContext ctx = GlobalContext.getInstance(args);
 			result = myMain(args);
-			Runtime.terminate();
+			//Runtime.terminate();
 		} catch (Throwable e) {
 			// this normally should not happen, because myMain() should not throw, but Runtime.* may in case
 			// of a bug..
@@ -87,9 +57,12 @@ version(WINMAIN) {
 
 	int myMain(string[] args)
 	{
+		GlobalContext ctx = GlobalContext.getInstance(args);
 		auto application = new Application("org.gtkd.demo.helloworld", GApplicationFlags.FLAGS_NONE);
-		application.addOnActivate(delegate void(GioApplication app) { new HelloWorld(application, args); });
-		return application.run(args);
+		application.addOnActivate(delegate void(GioApplication app) { new MainWindow(application, args); });
+		auto result = application.run(args);
+		ctx.saveConfig();
+		return result;
 	}
 } else {
 	// this is for non-windows systems, or when in need for a text console under Windows.
@@ -97,9 +70,11 @@ version(WINMAIN) {
 	// no need for the WinMain() hack here.
 	int main(string[] args)
 	{
-		writeln(args);
+		GlobalContext ctx = GlobalContext.getInstance(args);
 		auto application = new Application("org.gtkd.demo.helloworld", GApplicationFlags.FLAGS_NONE);
-		application.addOnActivate(delegate void(GioApplication app) { new HelloWorld(application, args); });
-		return application.run(args);
+		application.addOnActivate(delegate void(GioApplication app) { new MainWindow(application, args); });
+		auto result = application.run(args);
+		ctx.saveConfig();
+		return result;
 	}
 }
