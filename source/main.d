@@ -11,6 +11,7 @@ module main;
 import std.file;
 import std.conv;
 import std.stdio;
+import std.string;
 
 import gio.Application : GioApplication = Application;
 import gtk.Application;
@@ -49,33 +50,38 @@ class HelloWorld : ApplicationWindow
 }
 
 version(Windows) {
-	import core.sys.windows.windows, core.runtime;
+	import core.sys.windows.windows, std.array: split;
+	import core.runtime, core.stdc.stdlib: exit;
+	// a WinMain() function as an entry point for a GUI application
+	// it is called before the D runtime is initialized, so you must manually do this
 	extern (Windows) int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 	{
 		int result;
 		try
 		{
-			string[] args = [];
+			string cmdLine = to!string(lpCmdLine);
+			string[] args = cmdLine.split(" ");
 			Runtime.initialize();
+			MessageBoxA(null, "In WinMain(), now starting the real app", lpCmdLine, MB_ICONEXCLAMATION);
 			result = myMain(args);
 			Runtime.terminate();
+			exit(0);
 		}
 		catch (Throwable e) 
 		{
-			//MessageBoxA(null, e.toString().toStringz(), null, MB_ICONEXCLAMATION);
+			MessageBoxA(null, e.toString().toStringz(), null, MB_ICONEXCLAMATION);
 			result = 0;     // failed
 		}
 		return result;
 	}
-
 	int myMain(string[] args)
 	{
 		auto application = new Application("org.gtkd.demo.helloworld", GApplicationFlags.FLAGS_NONE);
 		application.addOnActivate(delegate void(GioApplication app) { new HelloWorld(application); });
 		return application.run(args);
 	}
-
 } else {
+	// this is for non-windows systems, no need for the WinMain() hack.
 	int main(string[] args)
 	{
 		auto application = new Application("org.gtkd.demo.helloworld", GApplicationFlags.FLAGS_NONE);
