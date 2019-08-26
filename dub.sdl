@@ -1,5 +1,13 @@
 name "gtkdtest"
 dependency "gtk-d" version="~>3.9.0"
 targetType "executable"
-lflags "-Subsystem:Windows"
 sourcePaths "."
+configuration "default" {
+    versions "DEFAULT"
+}
+
+configuration "winmain" {
+    versions "WINMAIN"
+    platforms "windows"
+    lflags "-Subsystem:Windows"
+}

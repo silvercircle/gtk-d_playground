@@ -1,11 +1,15 @@
 {
     "git.autofetch": false,
     "git.enabled": true,
+    "git.alwaysShowStagedChangesResourceGroup": true,
+    "git.autorefresh": true,
     "files.exclude": {
         "**/.git": true,
         "**/.svn": true,
         "**/.hg": true,
         "**/CVS": true,
+        "**/.dub": true,
+        "**.exe": true,
         "**/.DS_Store": true
     }
 }
