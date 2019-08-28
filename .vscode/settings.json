@@ -2,7 +2,7 @@
     "git.autofetch": false,
     "git.enabled": true,
     "git.alwaysShowStagedChangesResourceGroup": true,
-    "git.autorefresh": true,
+    "git.autorefresh": false,
     "files.exclude": {
         "**/.git": true,
         "**/.svn": true,

@@ -1,24 +1,33 @@
+/++
+ + Gtk-D sample. Provide a WinMain() and link with Subsystem:Windows to eliminate the
+ + windows console from a Gtk-D GUI application.
+ + 
+ + © 2019, Alex Vie <silvercircle@gmail.com>
+ + License: MIT
+ +/
+ 
 module menu;
 
 import gtk.Widget, gtk.MenuBar, gtk.Menu, gtk.MenuItem;
-import context, appwindow;
+import context, appwindow, aboutdialog, utils;
 
 class MainMenuBar :  MenuBar 
 {
-	this(MainWindow w)
+	enum { ID_EXIT = 1, ID_HELPABOUT = 2 }
+	this(MyMainWindow w)
 	{
 		super();
 
-		m_fileMenuItem = new MenuItem("File");
+		m_fileMenuItem = new MenuItem(utils._("File"));
 		m_editMenuItem = new MenuItem("Edit");
 		m_helpMenuItem = new MenuItem("Help");
 		m_helpMenu = new Menu();
 		m_fileMenu = new Menu();
 
 		MenuItem aboutMenuItem = new MenuItem(&menuHandler, "About");
-		aboutMenuItem.setData("id", cast(void*) 1);
+		aboutMenuItem.setData("id", cast(void*) ID_HELPABOUT);
 		MenuItem exitMenuItem = new MenuItem(&menuHandler, "Exit");
-		exitMenuItem.setData("id", cast(void *) 2);
+		exitMenuItem.setData("id", cast(void *) ID_EXIT);
 		m_helpMenu.append(aboutMenuItem);
 		m_fileMenu.append(exitMenuItem);
 
@@ -35,13 +44,22 @@ class MainMenuBar :  MenuBar
 
 	void menuHandler(MenuItem m)
 	{
-		if(m.getData("id") == cast(void*) 1)
-			m_ctx.log(LOG.WARN, "filemenuhandler");
+		uint the_id = cast(uint)(m.getData("id"));
+
+		final switch(the_id) {
+			case ID_EXIT:
+				m_Window.close();
+				break;
+			case ID_HELPABOUT:
+				AboutDialog dlg = AboutDialog.getInstance(m_Window);
+				dlg.showDialog();
+				break;
+		}
 	}
 
 public:
 	MenuItem 		m_fileMenuItem, m_editMenuItem, m_helpMenuItem;
 	Menu			m_helpMenu, m_fileMenu;
 	GlobalContext 	m_ctx;
-	MainWindow		m_Window;
+	MyMainWindow	m_Window;
 }

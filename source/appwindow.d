@@ -1,6 +1,14 @@
+/++
+ + Gtk-D sample. Provide a WinMain() and link with Subsystem:Windows to eliminate the
+ + windows console from a Gtk-D GUI application.
+ + 
+ + © 2019, Alex Vie <silvercircle@gmail.com>
+ + License: MIT
+ +/
+ 
 module appwindow;
 
-import gtk.ApplicationWindow;
+import gtk.MainWindow;
 import gtk.Label;
 
 import gtk.MainWindow, gtk.Application;
@@ -9,11 +17,11 @@ import gtk.Widget, gdk.Event, gtk.Widget, gtk.MenuBar;
 
 import context, menu;
 
-class MainWindow : ApplicationWindow
+class MyMainWindow : MainWindow
 {
-	this(Application application, ref string[] args)
+	this(ref string[] args)
 	{
-		super(application);
+		super("hello world");
 		this.m_ctx = GlobalContext.getInstance();
 
 		this.m_args = args;

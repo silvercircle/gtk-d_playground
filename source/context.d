@@ -1,3 +1,11 @@
+/++
+ + Gtk-D sample. Provide a WinMain() and link with Subsystem:Windows to eliminate the
+ + windows console from a Gtk-D GUI application.
+ + 
+ + © 2019, Alex Vie <silvercircle@gmail.com>
+ + License: MIT
+ +/
+ 
 module context;
 
 import std.process, std.path, std.stdio, std.file, std.string, std.conv;
@@ -76,7 +84,7 @@ private:
 	string      	exePath;
 	string      	configFilePath, logfilePath;
 	shared      	FileLogger logger;
-	MainWindow		m_MainWindow;
+	MyMainWindow	m_MainWindow;
 public:
 	/**
 	 * the configuration object
@@ -205,5 +213,5 @@ public:
 	 */
 	@property homedir() const { return this.homeDir; }
 	@property mainwindow() const { return this.m_MainWindow; }
-	@property void mainwindow(MainWindow w) { this.m_MainWindow = w; }
+	@property void mainwindow(MyMainWindow w) { this.m_MainWindow = w; }
 }

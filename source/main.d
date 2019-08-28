@@ -18,8 +18,7 @@ import std.file;
 import std.conv;
 import std.string;
 
-import gio.Application : GioApplication = Application;
-import gtk.Application;
+import gtk.Main, gtk.MainWindow;
 
 import appwindow, context;
 
@@ -41,7 +40,7 @@ version(WINMAIN) {
 			string[] cmdargs = cmdLine.split(" --");
 
 			Runtime.initialize();
-			args ~= std.file.thisExePath().dup;
+			args ~= std.file.thisExePath();
 			args ~= cmdargs;
 			const GlobalContext ctx = GlobalContext.getInstance(args);
 			result = myMain(args);
@@ -58,11 +57,11 @@ version(WINMAIN) {
 	int myMain(string[] args)
 	{
 		GlobalContext ctx = GlobalContext.getInstance(args);
-		auto application = new Application("org.gtkd.demo.helloworld", GApplicationFlags.FLAGS_NONE);
-		application.addOnActivate(delegate void(GioApplication app) { new MainWindow(application, args); });
-		auto result = application.run(args);
+		Main.init(args);
+		MainWindow win = new MyMainWindow(args);
+		Main.run();
 		ctx.saveConfig();
-		return result;
+		return 0;
 	}
 } else {
 	// this is for non-windows systems, or when in need for a text console under Windows.
@@ -71,10 +70,10 @@ version(WINMAIN) {
 	int main(string[] args)
 	{
 		GlobalContext ctx = GlobalContext.getInstance(args);
-		auto application = new Application("org.gtkd.demo.helloworld", GApplicationFlags.FLAGS_NONE);
-		application.addOnActivate(delegate void(GioApplication app) { new MainWindow(application, args); });
-		auto result = application.run(args);
+		Main.init(args);
+		MainWindow win = new MyMainWindow(args);
+		Main.run();
 		ctx.saveConfig();
-		return result;
+		return 0;
 	}
 }
