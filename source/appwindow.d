@@ -23,7 +23,6 @@ class MyMainWindow : MainWindow
 	{
 		super("hello world");
 		this.m_ctx = GlobalContext.getInstance();
-
 		this.m_args = args;
 		setTitle("GtkD Test application");
 		this.setDefaultSize(m_ctx.cfg.pos_mainwindow.width, m_ctx.cfg.pos_mainwindow.height);

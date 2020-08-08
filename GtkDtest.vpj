@@ -1,0 +1,155 @@
+<!DOCTYPE Project SYSTEM "http://www.slickedit.com/dtd/vse/10.0/vpj.dtd">
+<Project
+    WorkingDir="."
+    Version="10.0"
+    VendorName="SlickEdit"
+    TemplateName="D - DigitalMars (Unix)">
+    <Files>
+        <Folder
+            Name="Source Files"
+            Filters="*.d;*.di;*.c;*.cpp"
+            GUID="{A149B593-FFDC-4893-9A41-E80BF7116371}">
+            <F N="source/aboutdialog.d"/>
+            <F N="source/appwindow.d"/>
+            <F N="source/context.d"/>
+            <F N="source/main.d"/>
+            <F N="source/menu.d"/>
+            <F N="source/utils.d"/>
+        </Folder>
+        <Folder
+            Name="Header Files"
+            Filters="*.h"
+            GUID="{DE7F96CB-7CE6-4E2A-B958-24C09776B033}"/>
+        <Folder
+            Name="Resource Files"
+            Filters="*.def;*.res"
+            GUID="{864B2951-E6B8-45A3-9986-93E573F75F30}"/>
+        <Folder
+            Name="Bitmaps"
+            Filters=""
+            GUID="{8BAACBB7-D1A0-4649-A1AF-166AE82527DE}"/>
+        <Folder
+            Name="Other Files"
+            Filters="*.dd"
+            GUID="{6C520923-24AF-4BBF-9C21-1A7CC13AF022}"/>
+    </Files>
+    <Config
+        Name="Debug"
+        Type="gnuc"
+        DebugCallbackName="gdb"
+        OutputFile="GtkDtest"
+        CompilerConfigName="Latest Version">
+        <Menu>
+            <Target
+                Name="Compile"
+                MenuCaption="&amp;Compile"
+                CaptureOutputWith="ProcessBuffer"
+                SaveOption="SaveCurrent"
+                RunFromDir="%rw">
+                <Exec CmdLine='dmd -c -g -debug %i -of"%bd%n.o" "%f"'/>
+            </Target>
+            <Target
+                Name="Link"
+                MenuCaption="&amp;Link">
+                <Exec CmdLine='dmd -g -debug -of"%o" %f %libs'/>
+            </Target>
+            <Target
+                Name="Build"
+                MenuCaption="&amp;Build"
+                CaptureOutputWith="ProcessBuffer"
+                SaveOption="SaveWorkspaceFiles"
+                RunFromDir="%rw">
+                <Exec CmdLine='"%(VSLICKBIN1)vsbuild" build "%w" "%r"'/>
+            </Target>
+            <Target
+                Name="Rebuild"
+                MenuCaption="&amp;Rebuild"
+                CaptureOutputWith="ProcessBuffer"
+                SaveOption="SaveWorkspaceFiles"
+                RunFromDir="%rw">
+                <Exec CmdLine='"%(VSLICKBIN1)vsbuild" rebuild "%w" "%r"'/>
+            </Target>
+            <Target
+                Name="Debug"
+                MenuCaption="&amp;Debug"
+                SaveOption="SaveNone"
+                BuildFirst="1"
+                CaptureOutputWith="ProcessBuffer"
+                RunFromDir="%rw">
+                <Exec CmdLine='vsdebugio -prog "%o"'/>
+            </Target>
+            <Target
+                Name="Execute"
+                MenuCaption="E&amp;xecute"
+                SaveOption="SaveNone"
+                BuildFirst="1"
+                CaptureOutputWith="ProcessBuffer"
+                RunFromDir="%rw">
+                <Exec CmdLine='"%o"'/>
+            </Target>
+        </Menu>
+        <Rules Name="Compile">
+            <Rule
+                InputExts="*.d"
+                OutputExts="*.o"
+                LinkObject="1">
+                <Exec CmdLine='dmd -c -g -debug -of"%bd%n.o" "%f"'/>
+            </Rule>
+        </Rules>
+    </Config>
+    <Config
+        Name="Release"
+        Type="gnuc"
+        DebugCallbackName="gdb"
+        OutputFile="GtkDtest"
+        CompilerConfigName="Latest Version">
+        <Menu>
+            <Target
+                Name="Compile"
+                MenuCaption="&amp;Compile"
+                CaptureOutputWith="ProcessBuffer"
+                SaveOption="SaveCurrent"
+                RunFromDir="%rw">
+                <Exec CmdLine='dmd -O -c %i -of"%bd%n.o" "%f"'/>
+            </Target>
+            <Target
+                Name="Link"
+                MenuCaption="&amp;Link">
+                <Exec CmdLine='dmd -O -of"%o" %f %libs'/>
+            </Target>
+            <Target
+                Name="Build"
+                MenuCaption="&amp;Build"
+                CaptureOutputWith="ProcessBuffer"
+                SaveOption="SaveWorkspaceFiles"
+                RunFromDir="%rw">
+                <Exec CmdLine='"%(VSLICKBIN1)vsbuild" build "%w" "%r"'/>
+            </Target>
+            <Target
+                Name="Rebuild"
+                MenuCaption="&amp;Rebuild"
+                CaptureOutputWith="ProcessBuffer"
+                SaveOption="SaveWorkspaceFiles"
+                RunFromDir="%rw">
+                <Exec CmdLine='"%(VSLICKBIN1)vsbuild" rebuild "%w" "%r"'/>
+            </Target>
+            <Target
+                Name="Execute"
+                MenuCaption="E&amp;xecute"
+                SaveOption="SaveNone"
+                BuildFirst="1"
+                CaptureOutputWith="ProcessBuffer"
+                RunFromDir="%rw">
+                <Exec CmdLine='"%o"'/>
+            </Target>
+        </Menu>
+        <Rules Name="Compile">
+            <Rule
+                InputExts="*.d"
+                OutputExts="*.o"
+                LinkObject="1">
+                <Exec CmdLine='dmd -O -c -of"%bd%n.o" "%f"'/>
+            </Rule>
+        </Rules>
+    </Config>
+</Project>

@@ -19,7 +19,6 @@ import std.conv;
 import std.string;
 
 import gtk.Main, gtk.MainWindow;
-
 import appwindow, context;
 
 version(WINMAIN) {

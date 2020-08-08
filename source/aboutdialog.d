@@ -20,13 +20,13 @@ class AboutDialog : MessageDialog
 
 		m_ctx = GlobalContext.getInstance();
 
-		super(w, GtkDialogFlags.MODAL | GtkDialogFlags.DESTROY_WITH_PARENT, GtkMessageType.INFO,
-			GtkButtonsType.OK, true, "%s", "");
+		super(w, GtkDialogFlags.MODAL | GtkDialogFlags.DESTROY_WITH_PARENT | GtkDialogFlags.USE_HEADER_BAR, GtkMessageType.INFO,
+			GtkButtonsType.OK, true, "%s", "<b>FOOBAR</b>");
 
 		setTitle(utils._("About this Application"));
-		setMarkup(q"[<span size="100"><b>GtkD</b> Test application
-©2019 Alex Vie &lt;silvercircle@gmail.com&gt;
-License: MIT</span>]");
+//		setMarkup(q"[<span size="100"><b>GtkD</b> Test application
+//©2019 Alex Vie &lt;silvercircle@gmail.com&gt;
+//License: MIT</span>]");
 		setBorderWidth(10);
 		setDefaultSize(400, 100);
 		m_ctx.log(LOG.WARN, "Constructed the About Dialog");
