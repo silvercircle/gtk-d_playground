@@ -18,8 +18,9 @@ import std.file;
 import std.conv;
 import std.string;
 
-import gtk.Main, gtk.MainWindow;
+import gtk.MainWindow;
 import appwindow, context;
+import gtk.Main;
 
 version(WINMAIN) {
 	import core.sys.windows.windows, std.array: split;
